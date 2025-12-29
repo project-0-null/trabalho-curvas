@@ -52,9 +52,9 @@ def main():
     print("Turma 25/2")
     print("="*60)
     print("Integrantes do grupo:")
-    print("1. [SEU NOME]")
-    print("2. [NOME COLEGA 1]")
-    print("3. [NOME COLEGA 2]")
+    print("1. Miguel Catelan Magalhães")
+    print("2. Henrique Bosi Sandoval")
+    print("3. Wadson Alcides")
     print("="*60)
     
     input("\nPressione Enter para continuar...")
