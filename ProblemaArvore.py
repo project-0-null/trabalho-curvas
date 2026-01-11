@@ -1,10 +1,7 @@
-#-----------------------------------------------------------------------
-#configuração do matplotlib
-#-----------------------------------------------------------------------
 import sys
 import math
 
-def configurar_graficos():
+def configurar_graficos_arvore():
     """
     Configura matplotlib para funcionar no Ubuntu
     """
@@ -56,7 +53,6 @@ def configurar_graficos():
 #funçoes do trabalho
 #-----------------------------------------------------------------------
 
-
 def exibe_sistema_formatado(A, b, label=""): #exibe com  formatação
     print(f"\n{label}")
     for i in range(len(A)):
@@ -103,8 +99,6 @@ def Eliminação_de_Gauss_com_pivoteamento(n, A, b):
         x[i] = (b[i] - soma) / A[i][i]
     return x
 
-
-# lineariza par o caso modelo exponencial: y = a * exp(b * x)
 def  transforma_dados_caso_exponencial(y):
    n = len(y)
    # inicializa o vetor colocando zeros em todas as posicões
@@ -126,8 +120,8 @@ def plotar_grafico(x,y,titulo,plt_obj, modo_interativo):
     plt_obj.axvline(0,color='gray', linestyle='--',alpha=0.5)
 
     plt_obj.title(titulo, fontsize=16, fontweight='bold')
-    plt_obj.xlabel('tempo', fontsize=12)
-    plt_obj.ylabel('corrente', fontsize=12)
+    plt_obj.xlabel('diametro', fontsize=12)
+    plt_obj.ylabel('volume', fontsize=12)
     plt_obj.legend(fontsize=11)
     plt_obj.grid(True, alpha=0.3)
 
@@ -142,49 +136,51 @@ def plotar_grafico(x,y,titulo,plt_obj, modo_interativo):
         plt_obj.close()
 
 #-----------------------------------------------------------------------
-#PROBLEMA 1
+#PROBLEMA 2
 #-----------------------------------------------------------------------
-def resolvedor_do_problema_1(plt_obj, modo_interativo):
+
+def resolvedor_do_problema_2(plt_obj, modo_interativo):
     print("\n"+"="*60)
-    print("PROBLEMA 1 - CIRCUITO RC (AJUSTE EXPONENCIAL)")
+    print("PROBLEMA 2 - volumes DE ÁRVORE")
     print("="*60)
 
     #os dados que eu vou colocar aqui pode vir um for com um input pra serem variaveis depois mais ai tem que mudar a parre da matriz tb
-    tempos = [0.2, 1.0, 2.0, 5.0, 10.0, 20.0, 30.0, 50]
-    correntes = [12.9, 11.7, 10.0, 7.0, 3.5, 0.9, 0.2, 0.017]
+    diametros = [8.3,8.6,8.8,10.5,10.7,10.8,11,11,11.1,11.2,11.3,11.4,11.4,11.7,12,12.9,12.9,13.3,13.7,13.8,14,14.2,14.5,16,16.3,17.3,17.5,17.9,18,18,20.6]
+    volumes = [10.3,10.3,10.2,16.4,18.8,19.7,15.6,18.2,22.6,19.9,24.2,21,21.4,21.3,19.1,22.2,33.8,27.4,25.7,24.9,34.5,31.7,36.3,38.3,42.6,55.4,55.7,58.3,51.5,51,77]
 
-    print(f"\nDados experimentais (n = {len(tempos)}):")
-    print(f"Tempos (s):    {tempos}")
-    print(f"Correntes (A): {correntes}")
+    print(f"\nDados experimentais (n = {len(diametros)}):")
+    print(f"diametros (s):    {diametros}")
+    print(f"volumes (A): {volumes}")
 
-    plotar_grafico(tempos, correntes, "experimental data - RC Circuit ", plt_obj, modo_interativo)
+    plotar_grafico(diametros, volumes, "experimental data - trees", plt_obj, modo_interativo)
 
-    z= transforma_dados_caso_exponencial(correntes)
-    print(f"\nDados linearizados (z = ln(corrente)):")
+    w= transforma_dados_caso_exponencial(diametros)
+    z= transforma_dados_caso_exponencial(volumes)
+    print(f"\nDados linearizados (z = ln(volume)):")
     exibe_alguns_elementos(z,0,len(z))
 
     # 3. Plota dados linearizados
-    plotar_grafico(tempos, z, "linearized data - RC Circuit", 
+    plotar_grafico(w, z, "linearized data - trees", 
                    plt_obj, modo_interativo)
 
-    # 4. Monta sistema normal para ajuste linear z = β₀ + β₁*t
-    n = len(tempos)
-    smt_t = sum(tempos)
-    smt_t2 = sum(t * t for t in tempos)
+    # 4. Monta sistema normal para ajuste linear z = β₀ + β₁*ln(x)
+    n = len(w)
+    smt_w = sum(w)
+    smt_w2 = sum(d * d for d in w)
     smt_z = sum(z)
-    smt_tz = sum(tempos[i] * z[i] for i in range(n))
+    smt_wz = sum(w[i] * z[i] for i in range(n))
     #smt=somatorio
 
     print(f"\nSomatórias para sistema normal:")
     print(f"  n = {n}")
-    print(f"  Σt = {smt_t:.4f}")
-    print(f"  Σt² = {smt_t2:.4f}")
-    print(f"  Σz = {smt_z:.4f}")
-    print(f"  Σtz = {smt_tz:.4f}")
+    print(f"  Σln(x) = {smt_w:.4f}")
+    print(f"  Σ(ln(x))² = {smt_w2:.4f}")
+    print(f"  Σln(y) = {smt_z:.4f}")
+    print(f"  Σ(ln(x)*ln(y)) = {smt_wz:.4f}")
 
-    # Sistema normal: [[n, Σt], [Σt, Σt²]] * [β₀, β₁] = [Σz, Σtz]
-    A_sistema = [[n, smt_t], [smt_t, smt_t2]]
-    b_sistema = [smt_z, smt_tz]
+    # Sistema normal: [[n, Σd], [Σd, Σd²]] * [β₀, β₁] = [Σz, Σdz]
+    A_sistema = [[n, smt_w], [smt_w, smt_w2]]
+    b_sistema = [smt_z, smt_wz]
 
     print(f"\nSistema normal a ser resolvido:")
     exibe_sistema_formatado(A_sistema, b_sistema, "Sistema Normal")
@@ -201,24 +197,26 @@ def resolvedor_do_problema_1(plt_obj, modo_interativo):
         a = math.exp(beta0)
         b = beta1
         
-        print(f"\nParâmetros do modelo exponencial:")
+        print(f"\nParâmetros do modelo Potência (v = ax^b):")
         print(f"  a = exp(β₀) = {a:.6f}")
         print(f"  b = β₁ = {b:.6f}")
-        print(f"\nModelo ajustado: i(t) = {a:.4f} * e^({b:.4f} * t)")
+        print(f"  Equação Final: Volume = {a:.4f} * (Diâmetro)^{b:.4f}")
         
-        # 7. Calcula corrente para t = 40s
-        t_predicao = 40.0
-        i_predito = a * math.exp(b * t_predicao)
-        print(f"\nPrevisão para t = {t_predicao}s:")
-        print(f"  i({t_predicao}) = {i_predito:.6f} A")
+        # 7. Calcula volume para diâmetros solicitados
+        diametros_teste = [15.0, 22.0]
+        print(f"\nPrevisões solicitadas:")
+        for d_teste in diametros_teste:
+            # FÓRMULA CORRIGIDA: a * x^b
+            v_predito = a * (d_teste ** b)
+            print(f"  Diâmetro {d_teste} pol -> Volume estimado: {v_predito:.4f}")
         
         # 8. Calcula soma dos quadrados dos resíduos
         residuos = []
         soma_quadrados = 0
 
         for i in range(n):
-            i_ajustado = a * math.exp(b * tempos[i])
-            residuo = i_ajustado - correntes[i]
+            v_ajustado = a * (diametros[i] ** b)
+            residuo = v_ajustado - volumes[i]
             residuos.append(residuo)
             soma_quadrados += residuo ** 2
         
@@ -229,18 +227,18 @@ def resolvedor_do_problema_1(plt_obj, modo_interativo):
         # 9. Plota curva ajustada
         # Para plotar a curva suave, precisamos de mais pontos
         import numpy as np
-        t_suave = np.linspace(min(tempos), max(tempos) * 1.1, 100)
-        i_suave = a * np.exp(b * t_suave)
+        d_suave = np.linspace(min(diametros), max(diametros) * 1.1, 100)
+        v_suave = a * (d_suave ** b)
         
         # Cria gráfico com pontos e curva
         plt_obj.figure(figsize=(10, 6))
-        plt_obj.scatter(tempos, correntes, color='blue', s=100, 
+        plt_obj.scatter(diametros, volumes, color='blue', s=100, 
                        label='Experimental Data', edgecolor='black', linewidth=1)
-        plt_obj.plot(t_suave, i_suave, 'r-', linewidth=2, 
+        plt_obj.plot(d_suave, v_suave, 'r-', linewidth=2, 
                     label=f'$i(t) = {a:.3f}e^{{{b:.3f}t}}$')
-        plt_obj.title('Exponencial Adjust - RC Circuit', fontsize=16, fontweight='bold')
-        plt_obj.xlabel('time (s)', fontsize=12)
-        plt_obj.ylabel('Electric Current (A)', fontsize=12)
+        plt_obj.title('Exponencial Adjust - trees', fontsize=16, fontweight='bold')
+        plt_obj.xlabel('diameter (pol)', fontsize=12)
+        plt_obj.ylabel('volume (pol³)', fontsize=12)
         plt_obj.legend(fontsize=11)
         plt_obj.grid(True, alpha=0.3)
         
@@ -248,13 +246,10 @@ def resolvedor_do_problema_1(plt_obj, modo_interativo):
             plt_obj.show()
             print("\n✓ Gráfico do ajuste exibido em janela")
         else:
-            plt_obj.savefig('ajuste_exponencial_rc.png', dpi=150, bbox_inches='tight')
+            plt_obj.savefig('ajuste_exponencial_trees.png', dpi=150, bbox_inches='tight')
             plt_obj.close()
-            print("\nGráfico do ajuste salvo como: ajuste_exponencial_rc.png")
+            print("\nGráfico do ajuste salvo como: ajuste_exponencial_trees.png")
         
     except Exception as e:
         print(f"\nErro ao resolver sistema: {e}")
-
-
-
 

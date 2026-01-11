@@ -37,6 +37,8 @@ import os
 import platform
 from Problemacorrente import resolvedor_do_problema_1
 from Problemacorrente import configurar_graficos 
+from ProblemaArvore import resolvedor_do_problema_2
+from ProblemaArvore import configurar_graficos_arvore
 
 def clear():
     if platform.system() == "Windows":
@@ -54,11 +56,11 @@ def main():
     print("Integrantes do grupo:")
     print("1. Miguel Catelan Magalhães")
     print("2. Henrique Bosi Sandoval")
-    print("3. Wadson Alcides")
+    print("3. Wadson")
     print("="*60)
     
     input("\nPressione Enter para continuar...")
-    
+    clear()
     while True:
         print("\n" + "="*60)
         print("MENU PRINCIPAL")
@@ -72,11 +74,12 @@ def main():
         
         if opcao == "1":
             plt_obj, modo_interativo = configurar_graficos()
-            resolvedor_do_problema_1(plt_obj, modo_interativo) #chamar isso aqui dps, foi chamado
+            resolvedor_do_problema_1(plt_obj, modo_interativo) #chamar isso aqui dps, foi chamado *joia*
             input("\nPressione Enter para voltar ao menu...")
             
         elif opcao == "2":
-            print("\nfazendo ainda calam filho")
+            plt_obj, modo_interativo = configurar_graficos_arvore()
+            resolvedor_do_problema_2(plt_obj, modo_interativo) 
             input("Pressione Enter para voltar ao menu...")
             
         elif opcao == "3":
