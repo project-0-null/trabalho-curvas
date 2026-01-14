@@ -56,7 +56,7 @@ def main():
     print("Integrantes do grupo:")
     print("1. Miguel Catelan Magalhães")
     print("2. Henrique Bosi Sandoval")
-    print("3. Wadson")
+    print("3. Wadson Alcides Mendonça")
     print("="*60)
     
     input("\nPressione Enter para continuar...")
@@ -67,7 +67,7 @@ def main():
         print("="*60)
         print("1. Problema 1 - Circuito RC (ajuste exponencial)")
         print("2. Problema 2 - Volume de Árvore (ajuste potência)")
-        print("3. Sair do programa")
+        print("0. Sair do programa")
         print("="*60)
         
         opcao = input("\nDigite o número da opção desejada: ").strip()
@@ -82,12 +82,12 @@ def main():
             resolvedor_do_problema_2(plt_obj, modo_interativo) 
             input("Pressione Enter para voltar ao menu...")
             
-        elif opcao == "3":
+        elif opcao == "0":
             print("\nEncerrando programa...")
             print("Obrigado por me usar!")
             break
             
         else:
-            print("\nOpção inválida! Digite 1, 2 ou 3.")
+            print("\nOpção inválida! Digite 1, 2 ou 0.")
             input("Pressione Enter para tentar novamente...")
 main()

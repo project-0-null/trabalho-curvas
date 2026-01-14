@@ -163,7 +163,7 @@ def resolvedor_do_problema_2(plt_obj, modo_interativo):
     plotar_grafico(w, z, "linearized data - trees", 
                    plt_obj, modo_interativo)
 
-    # 4. Monta sistema normal para ajuste linear z = β₀ + β₁*ln(x)
+    # 4. Monta sistema normal para ajuste linear ln(y) = β₀ + β₁*ln(x)
     n = len(w)
     smt_w = sum(w)
     smt_w2 = sum(d * d for d in w)
@@ -235,7 +235,7 @@ def resolvedor_do_problema_2(plt_obj, modo_interativo):
         plt_obj.scatter(diametros, volumes, color='blue', s=100, 
                        label='Experimental Data', edgecolor='black', linewidth=1)
         plt_obj.plot(d_suave, v_suave, 'r-', linewidth=2, 
-                    label=f'$i(t) = {a:.3f}e^{{{b:.3f}t}}$')
+                    label=f'$v(d) = {a:.3f}d^{{{b:.3f}}}$')
         plt_obj.title('Exponencial Adjust - trees', fontsize=16, fontweight='bold')
         plt_obj.xlabel('diameter (pol)', fontsize=12)
         plt_obj.ylabel('volume (pol³)', fontsize=12)
